@@ -86,17 +86,16 @@ async def has_access(client, user_id, required_level):
         return role == "OWNER"
     
     elif required_level == "CEO":
-        return role in ["ALLROLE", "OWNER"]
+        return role in ["CEO", "ALLROLE", "OWNER"]  # <-- CEO DITAMBAHKAN!
     
     elif required_level == "ALLROLE_MANAGE":
-        # Untuk manage allrole (hanya Owner & CEO)
-        return role in ["OWNER"]
+        return role in ["CEO", "OWNER"]  # <-- CEO DITAMBAHKAN!
     
     elif required_level == "TK":
-        return role in [ "ALLROLE", "CEO", "OWNER"]
+        return role in ["TK", "ALLROLE", "CEO", "OWNER"]
     
     elif required_level == "ADMIN":
-        return role in ["TK", "ALLROLE", "CEO", "OWNER"]
+        return role in ["ADMIN", "TK", "ALLROLE", "CEO", "OWNER"]  # <-- ADMIN DITAMBAHKAN!
     
     elif required_level == "SELLER":
         return role in ["SELLER", "ADMIN", "TK", "ALLROLE", "CEO", "OWNER"]
