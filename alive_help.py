@@ -194,17 +194,30 @@ async def help_callback(client, callback_query):
     mod_match = re.match(r"help_module\((.+?)\)", callback_query.data)
     prev_match = re.match(r"help_prev\((.+?)\)", callback_query.data)
     next_match = re.match(r"help_next\((.+?)\)", callback_query.data)
-    tutup_match = re.match(r"help_tutup\((.+?)\)", callback_query.data)
     back_match = re.match(r"help_back", callback_query.data)
+    
     SH = await ubot.get_prefix(callback_query.from_user.id)
-    top_text = f"<blockquote><b>✣ Menu Inline : <a href=tg://user?id={callback_query.from_user.id}>{callback_query.from_user.first_name} {callback_query.from_user.last_name or ''}</a>\n✣ Total module : {len(HELP_COMMANDS)}\n✣ Prefixs : {' '.join(SH)}\n✣ My ubot : <a href=t.me/MyUbotpremium_bot>ᴜʙᴏᴛ ᴘʀᴇᴍɪᴜᴍ ᴢʏᴜʀᴀ</a></b></blockquote>"
+    top_text = f"""
+<blockquote><b>『 ✦ ᴍᴇɴᴜ ɪɴʟɪɴᴇ ✦ 』</b>
 
+<b>✣ ᴜꜱᴇʀ :</b> <a href=tg://user?id={callback_query.from_user.id}>{callback_query.from_user.first_name} {callback_query.from_user.last_name or ''}</a>
+<b>✣ ᴍᴏᴅᴜʟᴇ :</b> <code>{len(HELP_COMMANDS)}</code>
+<b>✣ ᴘʀᴇꜰɪx :</b> <code>{' '.join(SH)}</code>
+<b>✣ ʙᴏᴛ   :</b> <a href=t.me/MyUbotpremium_bot>ᴜʙᴏᴛ ᴘʀᴇᴍɪᴜᴍ ᴢʏᴜʀᴀ</a>
+
+<b>━━━━━━━━━━━━━━━━━━</b>
+<b>✧⋆ 𝘴𝘦𝘭𝘦𝘤𝘵 𝘮𝘰𝘥𝘶𝘭𝘦 𝘣𝘦𝘭𝘰𝘸 ⋆✧</b></blockquote>"""
     if mod_match:
         module = (mod_match.group(1)).replace(" ", "_")
-        text = HELP_COMMANDS[module].__HELP__.format(next((p) for p in SH))
+        prefix = next((p) for p in SH)
+        
+        # 🟢 FIX: Ganti {0} dengan prefix manual
+        help_text = HELP_COMMANDS[module].__HELP__
+        formatted_text = help_text.replace("{0}", prefix)
+        
         button = [[InlineKeyboardButton("⊲ ʙᴀᴄᴋ", callback_data="help_back")]]
         await callback_query.edit_message_text(
-            text=text,
+            text=formatted_text,
             reply_markup=InlineKeyboardMarkup(button),
             disable_web_page_preview=True,
         )
