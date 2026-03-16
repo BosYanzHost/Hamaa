@@ -12,7 +12,16 @@ from fansx import *
 
 async def get_user_role(client, user_id):
     """Mendapatkan role user dengan hierarki lengkap"""
-    owner_list = OWNER_ID if isinstance(OWNER_ID, list) else [OWNER_ID]
+    # Handle OWNER_ID dengan aman (anti-error)
+    try:
+        if isinstance(OWNER_ID, list):
+            owner_list = OWNER_ID
+        else:
+            owner_list = [OWNER_ID]
+    except:
+        # Fallback jika OWNER_ID bermasalah
+        owner_list = []
+    
     pt_list = await get_list_from_vars(bot.me.id, "PT_USERS")
     allrole_list = await get_list_from_vars(bot.me.id, "ALLROLE_USERS")
     ceo_list = await get_list_from_vars(bot.me.id, "CEO_USERS")
