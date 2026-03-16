@@ -172,7 +172,16 @@ async def user_help(client, message):
 @PY.INLINE("^user_help")
 async def user_help_inline(client, inline_query):
     SH = await ubot.get_prefix(inline_query.from_user.id)
-    msg = f"<blockquote><b>✣ Menu Inline <a href=tg://user?id={inline_query.from_user.id}>{inline_query.from_user.first_name} {inline_query.from_user.last_name or ''}</a>\n✣ Total module : {len(HELP_COMMANDS)}\n✣ Prefixs : {' '.join(SH)}\n✣ My ubot : <a href=t.me/MyUbotpremium_bot>ᴜʙᴏᴛ ᴘʀᴇᴍɪᴜᴍ ᴢʏᴜʀᴀ</a></b></blockquote>"
+    msg = f"""
+<blockquote><b>『 ✦ ᴍᴇɴᴜ ɪɴʟɪɴᴇ ✦ 』</b>
+
+<b>✣ ᴜꜱᴇʀ :</b> <a href=tg://user?id={inline_query.from_user.id}>{inline_query.from_user.first_name} {inline_query.from_user.last_name or ''}</a>
+<b>✣ ᴍᴏᴅᴜʟᴇ :</b> <code>{len(HELP_COMMANDS)}</code>
+<b>✣ ᴘʀᴇꜰɪx :</b> <code>{' '.join(SH)}</code>
+<b>✣ ʙᴏᴛ   :</b> <a href=t.me/MyUbotpremium_bot>ᴜʙᴏᴛ ᴘʀᴇᴍɪᴜᴍ ᴢʏᴜʀᴀ</a>
+
+<b>━━━━━━━━━━━━━━━━━━</b>
+<b>✧⋆ 𝘴𝘦𝘭𝘦𝘤𝘵 𝘮𝘰𝘥𝘶𝘭𝘦 𝘣𝘦𝘭𝘰𝘸 ⋆✧</b></blockquote>"""
     results = [InlineQueryResultArticle(
         title="Help Menu!",
         reply_markup=InlineKeyboardMarkup(paginate_modules(0, HELP_COMMANDS, "help")),
