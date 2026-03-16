@@ -12,16 +12,17 @@ from fansx import *
 
 async def get_user_role(client, user_id):
     """Mendapatkan role user dengan hierarki lengkap"""
-    # Handle OWNER_ID dengan aman (anti-error)
-    try:
-        if isinstance(OWNER_ID, list):
-            owner_list = OWNER_ID
-        else:
-            owner_list = [OWNER_ID]
-    except:
-        # Fallback jika OWNER_ID bermasalah
-        owner_list = []
+    # OWNER_ID bisa dalam bentuk list atau int
+    if isinstance(OWNER_ID, list):
+        owner_list = OWNER_ID
+    else:
+        owner_list = [OWNER_ID]
     
+    # CEK DULU APAKAH USER INI OWNER!
+    if user_id in owner_list:
+        return "OWNER"  # OWNER DETECTED! 🚨
+    
+    # Kalau bukan owner, baru cek role lain
     pt_list = await get_list_from_vars(bot.me.id, "PT_USERS")
     allrole_list = await get_list_from_vars(bot.me.id, "ALLROLE_USERS")
     ceo_list = await get_list_from_vars(bot.me.id, "CEO_USERS")
@@ -29,9 +30,7 @@ async def get_user_role(client, user_id):
     admin_list = await get_list_from_vars(bot.me.id, "ADMIN_USERS")
     seller_list = await get_list_from_vars(bot.me.id, "SELER_USERS")
     
-    if user_id in owner_list:
-        return "OWNER"
-    elif user_id in pt_list:
+    if user_id in pt_list:
         return "PT"
     elif user_id in allrole_list:
         return "ALLROLE"
@@ -48,10 +47,14 @@ async def get_user_role(client, user_id):
 
 async def check_role(client, user_id, required_level):
     """Cek apakah user memiliki akses ke level tertentu"""
-    role = await get_user_role(client, user_id)  # ✅ FIX
+    role = await get_user_role(client, user_id)
     
+    # 🟢🟢🟢 OWNER SELALU BISA AKSES SEMUA! 🟢🟢🟢
+    if role == "OWNER":
+        return True
+    
+    # Hierarki nilai (semakin besar semakin tinggi akses)
     role_hierarchy = {
-        "OWNER": 6,
         "PT": 5,
         "ALLROLE": 4,
         "CEO": 3,
@@ -67,8 +70,7 @@ async def check_role(client, user_id, required_level):
         "TK": 2,
         "CEO": 3,
         "ALLROLE": 4,
-        "PT": 5,
-        "OWNER": 6
+        "PT": 5
     }
     
     required_value = required_values.get(required_level, 0)
@@ -83,7 +85,10 @@ async def check_role(client, user_id, required_level):
 def PY_SELLER(func):
     """Akses untuk SELLER ke atas"""
     async def wrapper(client, message):
-        if not await check_role(client, message.from_user.id, "SELLER"):  # ✅ FIX
+        # 🟢 OWNER AUTO LOLOS!
+        if message.from_user.id in OWNER_ID:
+            return await func(client, message)
+        if not await check_role(client, message.from_user.id, "SELLER"):
             return await message.reply("❌ Perintah ini hanya untuk SELLER ke atas!")
         return await func(client, message)
     return wrapper
@@ -91,7 +96,10 @@ def PY_SELLER(func):
 def PY_ADMIN(func):
     """Akses untuk ADMIN ke atas"""
     async def wrapper(client, message):
-        if not await check_role(client, message.from_user.id, "ADMIN"):  # ✅ FIX
+        # 🟢 OWNER AUTO LOLOS!
+        if message.from_user.id in OWNER_ID:
+            return await func(client, message)
+        if not await check_role(client, message.from_user.id, "ADMIN"):
             return await message.reply("❌ Perintah ini hanya untuk ADMIN ke atas!")
         return await func(client, message)
     return wrapper
@@ -99,7 +107,10 @@ def PY_ADMIN(func):
 def PY_TK(func):
     """Akses untuk TK ke atas"""
     async def wrapper(client, message):
-        if not await check_role(client, message.from_user.id, "TK"):  # ✅ FIX
+        # 🟢 OWNER AUTO LOLOS!
+        if message.from_user.id in OWNER_ID:
+            return await func(client, message)
+        if not await check_role(client, message.from_user.id, "TK"):
             return await message.reply("❌ Perintah ini hanya untuk TK ke atas!")
         return await func(client, message)
     return wrapper
@@ -107,7 +118,10 @@ def PY_TK(func):
 def PY_CEO(func):
     """Akses untuk CEO ke atas"""
     async def wrapper(client, message):
-        if not await check_role(client, message.from_user.id, "CEO"):  # ✅ FIX
+        # 🟢 OWNER AUTO LOLOS!
+        if message.from_user.id in OWNER_ID:
+            return await func(client, message)
+        if not await check_role(client, message.from_user.id, "CEO"):
             return await message.reply("❌ Perintah ini hanya untuk CEO ke atas!")
         return await func(client, message)
     return wrapper
@@ -115,7 +129,10 @@ def PY_CEO(func):
 def PY_ALLROLE(func):
     """Akses untuk ALLROLE ke atas"""
     async def wrapper(client, message):
-        if not await check_role(client, message.from_user.id, "ALLROLE"):  # ✅ FIX
+        # 🟢 OWNER AUTO LOLOS!
+        if message.from_user.id in OWNER_ID:
+            return await func(client, message)
+        if not await check_role(client, message.from_user.id, "ALLROLE"):
             return await message.reply("❌ Perintah ini hanya untuk ALLROLE ke atas!")
         return await func(client, message)
     return wrapper
@@ -123,7 +140,10 @@ def PY_ALLROLE(func):
 def PY_PT(func):
     """Akses untuk PT ke atas"""
     async def wrapper(client, message):
-        if not await check_role(client, message.from_user.id, "PT"):  # ✅ FIX
+        # 🟢 OWNER AUTO LOLOS!
+        if message.from_user.id in OWNER_ID:
+            return await func(client, message)
+        if not await check_role(client, message.from_user.id, "PT"):
             return await message.reply("❌ Perintah ini hanya untuk PT ke atas!")
         return await func(client, message)
     return wrapper
