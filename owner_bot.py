@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta
+
+    from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pytz import timezone
@@ -10,13 +11,16 @@ from fansx import *
 # OWNER > PT > ALLROLE > CEO > TK > ADMIN > SELLER
 # ============================================
 
+def get_owner_list():
+    """Mengembalikan OWNER_ID dalam bentuk list"""
+    if isinstance(OWNER_ID, list):
+        return OWNER_ID
+    else:
+        return [OWNER_ID]
+
 async def get_user_role(client, user_id):
     """Mendapatkan role user dengan hierarki lengkap"""
-    # OWNER_ID bisa dalam bentuk list atau int
-    if isinstance(OWNER_ID, list):
-        owner_list = OWNER_ID
-    else:
-        owner_list = [OWNER_ID]
+    owner_list = get_owner_list()
     
     # CEK DULU APAKAH USER INI OWNER!
     if user_id in owner_list:
@@ -86,7 +90,7 @@ def PY_SELLER(func):
     """Akses untuk SELLER ke atas"""
     async def wrapper(client, message):
         # 🟢 OWNER AUTO LOLOS!
-        if message.from_user.id in OWNER_ID:
+        if message.from_user.id in get_owner_list():  # FIX: pake get_owner_list()
             return await func(client, message)
         if not await check_role(client, message.from_user.id, "SELLER"):
             return await message.reply("❌ Perintah ini hanya untuk SELLER ke atas!")
@@ -97,7 +101,7 @@ def PY_ADMIN(func):
     """Akses untuk ADMIN ke atas"""
     async def wrapper(client, message):
         # 🟢 OWNER AUTO LOLOS!
-        if message.from_user.id in OWNER_ID:
+        if message.from_user.id in get_owner_list():  # FIX
             return await func(client, message)
         if not await check_role(client, message.from_user.id, "ADMIN"):
             return await message.reply("❌ Perintah ini hanya untuk ADMIN ke atas!")
@@ -108,7 +112,7 @@ def PY_TK(func):
     """Akses untuk TK ke atas"""
     async def wrapper(client, message):
         # 🟢 OWNER AUTO LOLOS!
-        if message.from_user.id in OWNER_ID:
+        if message.from_user.id in get_owner_list():  # FIX
             return await func(client, message)
         if not await check_role(client, message.from_user.id, "TK"):
             return await message.reply("❌ Perintah ini hanya untuk TK ke atas!")
@@ -119,7 +123,7 @@ def PY_CEO(func):
     """Akses untuk CEO ke atas"""
     async def wrapper(client, message):
         # 🟢 OWNER AUTO LOLOS!
-        if message.from_user.id in OWNER_ID:
+        if message.from_user.id in get_owner_list():  # FIX
             return await func(client, message)
         if not await check_role(client, message.from_user.id, "CEO"):
             return await message.reply("❌ Perintah ini hanya untuk CEO ke atas!")
@@ -130,7 +134,7 @@ def PY_ALLROLE(func):
     """Akses untuk ALLROLE ke atas"""
     async def wrapper(client, message):
         # 🟢 OWNER AUTO LOLOS!
-        if message.from_user.id in OWNER_ID:
+        if message.from_user.id in get_owner_list():  # FIX
             return await func(client, message)
         if not await check_role(client, message.from_user.id, "ALLROLE"):
             return await message.reply("❌ Perintah ini hanya untuk ALLROLE ke atas!")
@@ -141,13 +145,12 @@ def PY_PT(func):
     """Akses untuk PT ke atas"""
     async def wrapper(client, message):
         # 🟢 OWNER AUTO LOLOS!
-        if message.from_user.id in OWNER_ID:
+        if message.from_user.id in get_owner_list():  # FIX
             return await func(client, message)
         if not await check_role(client, message.from_user.id, "PT"):
             return await message.reply("❌ Perintah ini hanya untuk PT ke atas!")
         return await func(client, message)
     return wrapper
-
 # ============================================
 # MANAJEMEN PT (OWNER ONLY)
 # ============================================
