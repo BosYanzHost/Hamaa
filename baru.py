@@ -4,7 +4,8 @@ from fansx import OWNER_ID, bot, ubot, get_expired_date
 
 
 class MSG:     
-    def EXP_MSG_UBOT(self, X):  # tambahkan self dan perbaiki indentasi
+    @staticmethod
+    def EXP_MSG_UBOT(X):
         return f"""
 <blockquote><b>❏ ᴘᴇᴍʙᴇʀɪᴛᴀʜᴜᴀɴ ᴜsᴇʀʙᴏᴛ</b>
 <b>├ ᴀᴄᴄᴏᴜɴ</b> : <a href=tg://user?id={X.me.id}>{X.me.first_name} {X.me.last_name or ''}</a>
@@ -15,7 +16,8 @@ class MSG:
 <b>╰ ᴀᴋꜱɪ</b> : ꜱɪʟᴀʜᴋᴀɴ ᴘᴇʀᴘᴀɴᴊᴀɴɢ ᴜɴᴛᴜᴋ ᴍᴇɴɢᴀᴋᴛɪꜰᴋᴀɴ ᴋᴇᴍʙᴀʟɪ</blockquote>
 """
 
-    def START(self, message):  # tambahkan self dan parameter, perbaiki indentasi
+    @staticmethod
+    def START(message):
         return f"""
 <blockquote><b>👋🏻 ʜᴀʟᴏ <a href=tg://user?id={message.from_user.id}>{message.from_user.first_name} {message.from_user.last_name or ''}</a>!
 
@@ -63,7 +65,8 @@ class MSG:
 ᴋʟɪᴋ ᴛᴏᴍʙᴏʟ ᴅɪʙᴀᴡᴀʜ ᴜɴᴛᴜᴋ ᴍᴇᴍʙᴜᴀᴛ ᴜsᴇʀʙᴏᴛ</b></blockquote>
 """
 
-    def TEXT_PAYMENT(self, harga, total, bulan):  # tambahkan self, perbaiki indentasi
+    @staticmethod
+    def TEXT_PAYMENT(harga, total, bulan):
         return f"""
 <blockquote><b>💬 sɪʟᴀʜᴋᴀɴ ᴍᴇʟᴀᴋᴜᴋᴀɴ ᴘᴇᴍʙᴀʏᴀʀᴀɴ ᴛᴇʀʟᴇʙɪʜ ᴅᴀʜᴜʟᴜ</b>
 
@@ -84,7 +87,8 @@ OWNER BOT : <a href=tg://openmessage?user_id={OWNER_ID}>@akuzyura</a>
 <b>🛍 ᴋʟɪᴋ ᴛᴏᴍʙᴏʟ ᴋᴏɴꜰɪʀᴍᴀꜱɪ ᴜɴᴛᴜᴋ ᴋɪʀɪᴍ ʙᴜᴋᴛɪ ᴘᴇᴍʙᴀʏᴀʀᴀɴ</b></blockquote>
 """
 
-    async def UBOT(self, count):  # tambahkan self, perbaiki indentasi
+    @staticmethod
+    async def UBOT(count):
         return f"""
 <blockquote><b>╭〢ᴜʙᴏᴛ ᴘʀᴇᴍɪᴜᴍ ᴢʏᴜʀᴀ</b> <code>{int(count) + 1}/{len(ubot._ubot)}</code>
 <b>├〢 ᴀᴄᴄᴏᴜɴᴛ</b> <a href=tg://user?id={ubot._ubot[int(count)].me.id}>{ubot._ubot[int(count)].me.first_name} {ubot._ubot[int(count)].me.last_name or ''}</a>
@@ -97,6 +101,7 @@ OWNER BOT : <a href=tg://openmessage?user_id={OWNER_ID}>@akuzyura</a>
 <b>╰〢 ɴᴏᴛᴇ</b> ᴊᴀɢᴀ ᴀᴋᴜɴ ᴀɢᴀʀ ᴛɪᴅᴀᴋ ᴛᴇʀʙᴀᴛᴀꜱ / ᴋᴇɴᴀ ʟɪᴍɪᴛ</blockquote>
 """
 
-    def POLICY(self):  # tambahkan self, perbaiki indentasi
+    @staticmethod
+    def POLICY():
         return f""" <blockquote><b>ᴊɪᴋᴀ ᴀᴅᴀ ᴋᴇɴᴅᴀʟᴀ sɪʟᴀʜᴋᴀɴ ʜᴜʙᴜɴɢɪ  <a href=tg://openmessage?user_id={OWNER_ID}>@akuzyura</a></b></blockquote>
 """
